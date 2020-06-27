@@ -1,5 +1,5 @@
 resource "aws_route53_record" "txt_amazonses" {
-  zone_id = "${var.zone_id}"
+  zone_id = var.zone_id
 
   name    = "_amazonses"
   type    = "TXT"
@@ -8,7 +8,7 @@ resource "aws_route53_record" "txt_amazonses" {
 }
 
 resource "aws_route53_record" "mx" {
-  zone_id = "${var.zone_id}"
+  zone_id = var.zone_id
 
   name    = ""
   type    = "MX"
@@ -17,7 +17,7 @@ resource "aws_route53_record" "mx" {
 }
 
 resource "aws_route53_record" "cname_autodiscover" {
-  zone_id = "${var.zone_id}"
+  zone_id = var.zone_id
 
   name    = "autodiscover"
   type    = "CNAME"
@@ -26,12 +26,12 @@ resource "aws_route53_record" "cname_autodiscover" {
 }
 
 resource "aws_route53_record" "cname_dkim" {
-  zone_id = "${var.zone_id}"
+  zone_id = var.zone_id
 
   name    = "${element(var.domain_keys, count.index)}._domainkey"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${element(var.domain_keys, count.index)}.dkim.amazonses.com."]
+  records = ["${var.domain_keys[count.index]}.dkim.amazonses.com."]
 
-  count = "${length(var.domain_keys)}"
+  count = length(var.domain_keys)
 }
